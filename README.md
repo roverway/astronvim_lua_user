@@ -2,7 +2,7 @@
 
 user config of AstroNvim, copy to `nvim/lua/usr` and run `nvim +PackerSync` 
 
-1. clone AstroNvim as your neovim config file, in windows, the path is `C:\Users\your_user_name\AppData\Local`:
+1. clone AstroNvim as your neovim config file, in windows, the path is `C:\Users\your_user_name\AppData\Local\nvim`:
 
 `git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim`
 
