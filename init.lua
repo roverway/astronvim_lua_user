@@ -1,14 +1,10 @@
 local config = {
 
   -- Set colorscheme
-  -- colorscheme = "default_theme",
+  colorscheme = "default_theme",
   -- colorscheme = "nightfox",
-  colorscheme = "dayfox",
-  -- colorscheme = "ayu",
-  -- colorscheme = "PaperColor",
-  -- colorscheme = "onedark",
+  -- colorscheme = "dayfox",
   -- colorscheme = "catppuccin",
-  -- colorscheme = "onehalflight",
 
   -- set vim options here (vim.<first_key>.<second_key> =  value)
   options = {
@@ -102,16 +98,6 @@ local config = {
       --   end,
       -- },
 
-      -- colorschemes
-      -- {
-      --   "rafi/awesome-vim-colorschemes",
-      --   config = function()
-      --     -- vim.opt.background = "light"
-      --     -- vim.g.ayucolor="light"  -- for light version of theme
-      --     -- vim.g.ayucolor="mirage" -- for mirage version of theme
-      --     -- vim.g.ayucolor="dark",   -- for dark version of theme
-      --   end,
-      -- },
       {
         "EdenEast/nightfox.nvim",
         config = function()
@@ -153,7 +139,6 @@ local config = {
       },
 
       -- status line
-      -- ["nvim-lualine/lualine.nvim"] = { disable = false, },
 
       -- {
       --   "windwp/windline.nvim",
@@ -162,14 +147,6 @@ local config = {
       --   end,
       -- },
 
-      -- markdown-preview
-      -- {
-        -- "iamcco/markdown-preview.nvim",
-        -- config = function ()
-        --   -- config
-        --
-        -- end,
-      -- },
     },
 
     -- All other entries override the setup() call for default plugins
