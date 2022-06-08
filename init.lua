@@ -12,14 +12,14 @@ local config = {
       relativenumber = false, -- sets vim.opt.relativenumber
       cursorcolumn = true,
       -- guifontwide = "Microsoft Yahei:h12:cANSI",
-      guifontwide = "Microsoft Yahei Mono:h13:cANSI",
+      -- guifontwide = "Microsoft Yahei Mono:h12:cANSI",
       guifont = "FiraCode Nerd Font Mono:h11:cANSI",
     },
     g = {
       mapleader = " ", -- sets vim.g.mapleader
 
       -- for neovide
-      neovide_transparency = 0.99,
+      neovide_transparency = 0.95,
       -- neovide_cursor_vfx_mode = "wireframe"
       -- neovide_cursor_vfx_mode = "ripple"
       -- neovide_cursor_vfx_mode = "sonicboom"
