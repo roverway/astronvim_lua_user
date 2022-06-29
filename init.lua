@@ -14,6 +14,14 @@ local config = {
       -- guifontwide = "Microsoft Yahei:h12:cANSI",
       -- guifontwide = "Microsoft Yahei Mono:h12:cANSI",
       guifont = "FiraCode Nerd Font Mono:h11:cANSI",
+
+	    -- 内部工作编码
+	    encoding="utf-8",
+	    -- 文件默认编码
+	    fileencoding="utf-8",
+	    -- 打开文件时自动尝试下面顺序的编码
+	    fileencodings="ucs-bom,utf-8,gbk,gb18030,big5,euc-jp,latin1",
+
     },
     g = {
       mapleader = " ", -- sets vim.g.mapleader
