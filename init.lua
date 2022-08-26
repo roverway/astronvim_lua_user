@@ -37,7 +37,22 @@ local config = {
       neovide_cursor_vfx_particle_density = 10,
 
     },
+
+
   },
+
+
+  -- 退出insert模式后自动切换到英文输入法
+  vim.api.nvim_create_autocmd({ "InsertLeave" }, {
+      pattern = { "*" },
+      callback = function()
+          local input_status = tonumber(vim.fn.system("fcitx5-remote"))
+          if input_status == 2 then
+              vim.fn.system("fcitx5-remote -c")
+          end
+      end,
+  }),
+
 
   -- Default theme configuration
   default_theme = {
