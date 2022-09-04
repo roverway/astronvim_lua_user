@@ -1,10 +1,48 @@
+--              AstroNvim Configuration Table
+-- All configuration changes should go inside of the table below
+
+-- You can think of a Lua "table" as a dictionary like data structure the
+-- normal format is "key = value". These also handle array like data structures
+-- where a value with no key simply has an implicit numeric key
 local config = {
 
-  -- Set colorscheme
+  -- Configure AstroNvim updates
+  updater = {
+    remote = "origin", -- remote to use
+    channel = "nightly", -- "stable" or "nightly"
+    version = "latest", -- "latest", tag name, or regex search like "v1.*" to only do updates before v2 (STABLE ONLY)
+    branch = "main", -- branch name (NIGHTLY ONLY)
+    commit = nil, -- commit hash (NIGHTLY ONLY)
+    pin_plugins = nil, -- nil, true, false (nil will pin plugins on stable only)
+    skip_prompts = false, -- skip prompts about breaking changes
+    show_changelog = true, -- show the changelog after performing an update
+    auto_reload = false, -- automatically reload and sync packer after a successful update
+    auto_quit = false, -- automatically quit the current session after a successful update
+    -- remotes = { -- easily add new remotes to track
+    --   ["remote_name"] = "https://remote_url.come/repo.git", -- full remote url
+    --   ["remote2"] = "github_user/repo", -- GitHub user/repo shortcut,
+    --   ["remote3"] = "github_user", -- GitHub user assume AstroNvim fork
+    -- },
+  },
+
+  -- Set colorscheme to use
   colorscheme = "default_theme",
   -- colorscheme = "nightfox",
   -- colorscheme = "dayfox",
   -- colorscheme = "catppuccin",
+
+  -- Override highlight groups in any theme
+  highlights = {
+    -- duskfox = { -- a table of overrides/changes to the default
+    --   Normal = { bg = "#000000" },
+    -- },
+    default_theme = function(highlights) -- or a function that returns a new table of colors to set
+      local C = require "default_theme.colors"
+
+      highlights.Normal = { fg = C.fg, bg = C.bg }
+      return highlights
+    end,
+  },
 
   -- set vim options here (vim.<first_key>.<second_key> =  value)
   options = {
@@ -15,106 +53,165 @@ local config = {
       -- guifontwide = "Microsoft Yahei Mono:h12:cANSI",
       guifont = "FiraCode Nerd Font Mono:h11:cANSI",
 
-	    -- 内部工作编码
-	    encoding="utf-8",
-	    -- 文件默认编码
-	    fileencoding="utf-8",
-	    -- 打开文件时自动尝试下面顺序的编码
-	    fileencodings="ucs-bom,utf-8,gbk,gb18030,big5,euc-jp,latin1",
-
+      -- 内部工作编码
+      encoding = "utf-8",
+      -- 文件默认编码
+      fileencoding = "utf-8",
+      -- 打开文件时自动尝试下面顺序的编码
+      fileencodings = "ucs-bom,utf-8,gbk,gb18030,big5,euc-jp,latin1",
     },
     g = {
       mapleader = " ", -- sets vim.g.mapleader
-
-      -- for neovide
-      neovide_transparency = 0.95,
-      -- neovide_cursor_vfx_mode = "wireframe"
-      -- neovide_cursor_vfx_mode = "ripple"
-      -- neovide_cursor_vfx_mode = "sonicboom"
-      -- neovide_cursor_vfx_mode = "pixiedust"
-      -- neovide_cursor_vfx_mode = "torpedo"
-      neovide_cursor_vfx_mode = "railgun",
-      neovide_cursor_vfx_particle_density = 10,
-
     },
-
-
   },
+  -- If you need more control, you can use the function()...end notation
+  -- options = function(local_vim)
+  --   local_vim.opt.relativenumber = true
+  --   local_vim.g.mapleader = " "
+  --   local_vim.opt.whichwrap = vim.opt.whichwrap - { 'b', 's' } -- removing option from list
+  --   local_vim.opt.shortmess = vim.opt.shortmess + { I = true } -- add to option list
+  --
+  --   return local_vim
+  -- end,
 
-
-  -- 退出insert模式后自动切换到英文输入法
-  --[[ vim.api.nvim_create_autocmd({ "InsertLeave" }, { ]]
-  --[[     pattern = { "*" }, ]]
-  --[[     callback = function() ]]
-  --[[         local input_status = tonumber(vim.fn.system("fcitx5-remote")) ]]
-  --[[         if input_status == 2 then ]]
-  --[[             vim.fn.system("fcitx5-remote -c") ]]
-  --[[         end ]]
-  --[[     end, ]]
-  --[[ }), ]]
-
+  -- Set dashboard header
+  header = {
+    " █████  ███████ ████████ ██████   ██████",
+    "██   ██ ██         ██    ██   ██ ██    ██",
+    "███████ ███████    ██    ██████  ██    ██",
+    "██   ██      ██    ██    ██   ██ ██    ██",
+    "██   ██ ███████    ██    ██   ██  ██████",
+    " ",
+    "    ███    ██ ██    ██ ██ ███    ███",
+    "    ████   ██ ██    ██ ██ ████  ████",
+    "    ██ ██  ██ ██    ██ ██ ██ ████ ██",
+    "    ██  ██ ██  ██  ██  ██ ██  ██  ██",
+    "    ██   ████   ████   ██ ██      ██",
+  },
 
   -- Default theme configuration
   default_theme = {
+    -- set the highlight style for diagnostic messages
     diagnostics_style = { italic = true },
-    -- Modify the color table
+    -- Modify the color palette for the default theme
     colors = {
       fg = "#abb2bf",
+      bg = "#1e222a",
     },
-    -- Modify the highlight groups
-    highlights = function(highlights)
-      local C = require "default_theme.colors"
-
-      highlights.Normal = { fg = C.fg, bg = C.bg }
-      return highlights
-    end,
+    -- enable or disable highlighting for extra plugins
+    plugins = {
+      aerial = true,
+      beacon = false,
+      bufferline = true,
+      dashboard = true,
+      highlighturl = true,
+      hop = false,
+      indent_blankline = true,
+      lightspeed = false,
+      ["neo-tree"] = true,
+      notify = true,
+      ["nvim-tree"] = false,
+      ["nvim-web-devicons"] = true,
+      rainbow = true,
+      symbols_outline = false,
+      telescope = true,
+      vimwiki = false,
+      ["which-key"] = true,
+    },
   },
 
-  -- NvChad Telescope Theme on default_theme
-  -- default_theme = {
-  --     colors = function(C)
-  --       C.telescope_green = C.green
-  --       C.telescope_red = C.red
-  --       C.telescope_fg = C.fg
-  --       C.telescope_bg = C.black_1
-  --       C.telescope_bg_alt = C.bg_1
-  --       return C
-  --     end,
-  --     highlights = function(hl)
-  --       local C = require "default_theme.colors"
-  --       hl.TelescopeBorder = { fg = C.telescope_bg_alt, bg = C.telescope_bg }
-  --       hl.TelescopeNormal = { bg = C.telescope_bg }
-  --       hl.TelescopePreviewBorder = { fg = C.telescope_bg, bg = C.telescope_bg }
-  --       hl.TelescopePreviewNormal = { bg = C.telescope_bg }
-  --       hl.TelescopePreviewTitle = { fg = C.telescope_bg, bg = C.telescope_green }
-  --       hl.TelescopePromptBorder = { fg = C.telescope_bg_alt, bg = C.telescope_bg_alt }
-  --       hl.TelescopePromptNormal = { fg = C.telescope_fg, bg = C.telescope_bg_alt }
-  --       hl.TelescopePromptPrefix = { fg = C.telescope_red, bg = C.telescope_bg_alt }
-  --       hl.TelescopePromptTitle = { fg = C.telescope_bg, bg = C.telescope_red }
-  --       hl.TelescopeResultsBorder = { fg = C.telescope_bg, bg = C.telescope_bg }
-  --       hl.TelescopeResultsNormal = { bg = C.telescope_bg }
-  --       hl.TelescopeResultsTitle = { fg = C.telescope_bg, bg = C.telescope_bg }
-  --       return hl
-  --     end,
-  --   },
+  -- Diagnostics configuration (for vim.diagnostics.config({...}))
+  diagnostics = {
+    virtual_text = true,
+    underline = true,
+  },
 
-  -- Disable AstroNvim ui features
-  ui = {
-    nui_input = true,
-    telescope_select = true,
+  -- Extend LSP configuration
+  lsp = {
+    -- enable servers that you already have installed without mason
+    servers = {
+      -- "pyright"
+    },
+    -- easily add or disable built in mappings added during LSP attaching
+    mappings = {
+      n = {
+        -- ["<leader>lf"] = false -- disable formatting keymap
+      },
+    },
+    -- add to the global LSP on_attach function
+    -- on_attach = function(client, bufnr)
+    -- end,
+
+    -- override the mason server-registration function
+    -- server_registration = function(server, opts)
+    --   require("lspconfig")[server].setup(opts)
+    -- end,
+
+    -- Add overrides for LSP server settings, the keys are the name of the server
+    ["server-settings"] = {
+      -- example for addings schemas to yamlls
+      -- yamlls = { -- override table for require("lspconfig").yamlls.setup({...})
+      --   settings = {
+      --     yaml = {
+      --       schemas = {
+      --         ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
+      --         ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+      --         ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+      --       },
+      --     },
+      --   },
+      -- },
+      -- Example disabling formatting for a specific language server
+      -- gopls = { -- override table for require("lspconfig").gopls.setup({...})
+      --   on_attach = function(client, bufnr)
+      --     client.resolved_capabilities.document_formatting = false
+      --   end
+      -- }
+    },
+  },
+
+  -- Mapping data with "desc" stored directly by vim.keymap.set().
+  --
+  -- Please use this mappings table to set keyboard mapping since this is the
+  -- lower level configuration and more robust one. (which-key will
+  -- automatically pick-up stored data by this setting.)
+  mappings = {
+    -- first key is the mode
+    n = {
+      -- second key is the lefthand side of the map
+      -- mappings seen under group name "Buffer"
+      ["<leader>bb"] = { "<cmd>tabnew<cr>", desc = "New tab" },
+      ["<leader>bc"] = { "<cmd>BufferLinePickClose<cr>", desc = "Pick to close" },
+      ["<leader>bj"] = { "<cmd>BufferLinePick<cr>", desc = "Pick to jump" },
+      ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
+      -- quick save
+      -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
+    },
+    t = {
+      -- setting a mapping to false will disable it
+      -- ["<esc>"] = false,
+    },
   },
 
   -- Configure plugins
   plugins = {
-    -- Add plugins, the packer syntax without the "use"
     init = {
       -- You can disable default plugins as follows:
-      -- ["goolord/alpha-nvim"] = { disable = false },
+      -- ["goolord/alpha-nvim"] = { disable = true },
 
       -- You can also add new plugins here as well:
+      -- Add plugins, the packer syntax without the "use"
       -- { "andweeb/presence.nvim" },
       -- {
       --   "ray-x/lsp_signature.nvim",
+      --   event = "BufRead",
+      --   config = function()
+      --     require("lsp_signature").setup()
+      --   end,
+      -- },
+
+      -- We also support a key value style plugin definition similar to NvChad:
+      -- ["ray-x/lsp_signature.nvim"] = {
       --   event = "BufRead",
       --   config = function()
       --     require("lsp_signature").setup()
@@ -125,65 +222,83 @@ local config = {
         "EdenEast/nightfox.nvim",
         config = function()
           require("nightfox").setup {
-                      -- disable extra plugins that AstroNvim doesn't use (this is optional)
-                      modules = { 
-                        barbar = false,
-                        dashboard = false,
-                        fern = false,
-                        fidget = false,
-                        gitgutter = false,
-                        glyph_palette = false,
-                        illuminate = false,
-                        lightspeed = false,
-                        lsp_saga = false,
-                        lsp_trouble = false,
-                        modes = false,
-                        neogit = false,
-                        nvimtree = false,
-                        pounce = false,
-                        sneak = false,
-                        symbols_outline = false,
-                      },
-                      groups = {
-                        all = {
-                          -- add highlight group for AstroNvim's built in URL highlighting
-                          HighlightURL = { style = "underline" },
-                        },
-                      },
-                    }
+            -- disable extra plugins that AstroNvim doesn't use (this is optional)
+            modules = {
+              barbar = false,
+              dashboard = false,
+              fern = false,
+              fidget = false,
+              gitgutter = false,
+              glyph_palette = false,
+              illuminate = false,
+              lightspeed = false,
+              lsp_saga = false,
+              lsp_trouble = false,
+              modes = false,
+              neogit = false,
+              nvimtree = false,
+              pounce = false,
+              sneak = false,
+              symbols_outline = false,
+            },
+            groups = {
+              all = {
+                -- add highlight group for AstroNvim's built in URL highlighting
+                HighlightURL = { style = "underline" },
+              },
+            },
+          }
         end,
       },
       {
         "catppuccin/nvim",
-	      as = "catppuccin",
-	      config = function ()
+        as = "catppuccin",
+        config = function()
           -- vim.opt.background = "dark"
-	      end,
+        end,
       },
 
       -- fcitx5 输入法自动切换
       { "h-hg/fcitx.nvim" },
-
-      -- status line
-
-      -- {
-      --   "windwp/windline.nvim",
-      --   config = function()
-      --     require("user.windline")
-      --   end,
-      -- },
-
     },
-
-    -- All other entries override the setup() call for default plugins
-    treesitter = {
+    -- All other entries override the require("<key>").setup({...}) call for default plugins
+    ["null-ls"] = function(config) -- overrides `require("null-ls").setup(config)`
+      -- config variable is the default configuration table for the setup functino call
+      local null_ls = require "null-ls"
+      -- Check supported formatters and linters
+      -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
+      -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
+      config.sources = {
+        -- Set a formatter
+        null_ls.builtins.formatting.stylua,
+        null_ls.builtins.formatting.prettier,
+      }
+      -- set up null-ls's on_attach function
+      -- NOTE: You can remove this on attach function to disable format on save
+      config.on_attach = function(client)
+        if client.resolved_capabilities.document_formatting then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            desc = "Auto format before save",
+            pattern = "<buffer>",
+            callback = vim.lsp.buf.formatting_sync,
+          })
+        end
+      end
+      return config -- return final config table to use in require("null-ls").setup(config)
+    end,
+    treesitter = { -- overrides `require("treesitter").setup(...)`
       ensure_installed = { "lua" },
     },
-    ["nvim-lsp-installer"] = {
+    -- use mason-lspconfig to configure LSP installations
+    ["mason-lspconfig"] = { -- overrides `require("mason-lspconfig").setup(...)`
       ensure_installed = { "sumneko_lua" },
     },
-    packer = {
-      compile_path = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
+    -- use mason-tool-installer to configure DAP/Formatters/Linter installation
+    ["mason-tool-installer"] = { -- overrides `require("mason-tool-installer").setup(...)`
+      ensure_installed = { "prettier", "stylua" },
+    },
+    packer = { -- overrides `require("packer").setup(...)`
+      compile_path = vim.fn.stdpath "data" .. "/packer_compiled.lua",
     },
   },
 
@@ -194,21 +309,6 @@ local config = {
     -- Extend filetypes
     filetype_extend = {
       javascript = { "javascriptreact" },
-    },
-  },
-
-  -- Modify which-key registration
-  ["which-key"] = {
-    -- Add bindings
-    register_mappings = {
-      -- first key is the mode, n == normal mode
-      n = {
-        -- second key is the prefix, <leader> prefixes
-        ["<leader>"] = {
-          -- which-key registration table for normal mode, leader prefix
-          -- ["N"] = { "<cmd>tabnew<cr>", "New Buffer" },
-        },
-      },
     },
   },
 
@@ -227,88 +327,27 @@ local config = {
     },
   },
 
-  -- Extend LSP configuration
-  lsp = {
-    -- enable servers that you already have installed without lsp-installer
-    servers = {
-      -- "pyright"
-    },
-    -- add to the server on_attach function
-    -- on_attach = function(client, bufnr)
-    -- end,
-
-    -- override the lsp installer server-registration function
-    -- server_registration = function(server, opts)
-    --   require("lspconfig")[server.name].setup(opts)
-    -- end
-
-    -- Add overrides for LSP server settings, the keys are the name of the server
-    ["server-settings"] = {
-      -- example for addings schemas to yamlls
-      -- yamlls = {
-      --   settings = {
-      --     yaml = {
-      --       schemas = {
-      --         ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
-      --         ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
-      --         ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
-      --       },
-      --     },
-      --   },
-      -- },
-    },
-  },
-
-  -- Diagnostics configuration (for vim.diagnostics.config({}))
-  diagnostics = {
-    virtual_text = true,
-    underline = true,
-  },
-
-  -- null-ls configuration
-  ["null-ls"] = function()
-    -- Formatting and linting
-    -- https://github.com/jose-elias-alvarez/null-ls.nvim
-    local status_ok, null_ls = pcall(require, "null-ls")
-    if not status_ok then
-      return
-    end
-
-    -- Check supported formatters
-    -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
-    local formatting = null_ls.builtins.formatting
-
-    -- Check supported linters
-    -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
-    local diagnostics = null_ls.builtins.diagnostics
-
-    null_ls.setup {
-      debug = false,
-      sources = {
-        -- Set a formatter
-        formatting.rufo,
-        -- Set a linter
-        diagnostics.rubocop,
+  -- Modify which-key registration (Use this with mappings table in the above.)
+  ["which-key"] = {
+    -- Add bindings which show up as group name
+    register_mappings = {
+      -- first key is the mode, n == normal mode
+      n = {
+        -- second key is the prefix, <leader> prefixes
+        ["<leader>"] = {
+          -- third key is the key to bring up next level and its displayed
+          -- group name in which-key top level menu
+          ["b"] = { name = "Buffer" },
+        },
       },
-      -- NOTE: You can remove this on attach function to disable format on save
-      on_attach = function(client)
-        if client.resolved_capabilities.document_formatting then
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            desc = "Auto format before save",
-            pattern = "<buffer>",
-            callback = vim.lsp.buf.formatting_sync,
-          })
-        end
-      end,
-    }
-  end,
+    },
+  },
 
-  -- This function is run last
-  -- good place to configure mappings and vim options
+  -- This function is run last and is a good place to configuring
+  -- augroups/autocommands and custom filetypes also this just pure lua so
+  -- anything that doesn't fit in the normal config locations above can go here
   polish = function()
-    -- Set key bindings
-    vim.keymap.set("n", "<C-s>", ":w!<CR>")
-
+    -- Set key binding
     -- Set autocommands
     vim.api.nvim_create_augroup("packer_conf", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePost", {
@@ -330,7 +369,6 @@ local config = {
     --     ["~/%.config/foo/.*"] = "fooscript",
     --   },
     -- }
-
   end,
 }
 
